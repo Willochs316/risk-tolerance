@@ -40,13 +40,13 @@ app.get("/", async (req, res) => {
   });
 
   // Read rows from spreadsheet
-  const getRows = await googleSheets.spreadsheets.values.get({
+  const getColumns = await googleSheets.spreadsheets.values.get({
     auth,
     spreadsheetId,
-    range: "Sheet1",
+    range: "Sheet1!2:2", // get the first columns
   });
 
-  res.send(getRows.data);
+  res.send(getColumns.data);
 });
 
 const CONNECTION_URL = process.env.MONGO_URI;
