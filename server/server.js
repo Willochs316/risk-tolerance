@@ -11,15 +11,21 @@ const app = express();
 
 app.use(express.json());
 
+app.set("view engine", "ejs");
+
 app.use(
   express.urlencoded({
-    extended: false,
+    extended: true,
   })
 );
 
 app.use(cors());
 
-app.get("/", async (req, res) => {
+app.get("/", (req, res) => {
+  res.render("index");
+});
+
+app.post("/", async (req, res) => {
   const auth = new google.auth.GoogleAuth({
     keyFile: "stock-risk.json",
     scopes: "https://www.googleapis.com/auth/spreadsheets",
@@ -43,7 +49,20 @@ app.get("/", async (req, res) => {
   const getColumns = await googleSheets.spreadsheets.values.get({
     auth,
     spreadsheetId,
-    range: "Sheet1!2:2", // get the first columns
+    range: "Sheet1!A:A", // get the first columns
+  });
+
+  // Write row(s) to spreadsheet
+  await googleSheets.spreadsheets.values.append({
+    auth,
+    spreadsheetId,
+    range: "Sheet1!A:K",
+    valueInputOption: "USER_ENTERED",
+    resource: {
+      values: [
+        ["11", "35%", "20%", "19%", "14%", "12%", "0%", "0%", "0%", "0%", "0%"],
+      ],
+    },
   });
 
   res.send(getColumns.data);
