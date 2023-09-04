@@ -22,7 +22,7 @@ app.use(
 app.use(cors());
 
 app.get("/", (req, res) => {
-  res.render("index");
+  res.render("server");
 });
 
 app.post("/", async (req, res) => {
