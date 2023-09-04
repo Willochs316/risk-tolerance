@@ -46,10 +46,10 @@ app.post("/", async (req, res) => {
   });
 
   // Read rows from spreadsheet
-  const getColumns = await googleSheets.spreadsheets.values.get({
+  const getRows = await googleSheets.spreadsheets.values.get({
     auth,
     spreadsheetId,
-    range: "Sheet1!A:A", // get the first columns
+    range: "Sheet1!A:A", // get the first rows
   });
 
   // Write row(s) to spreadsheet
@@ -65,7 +65,7 @@ app.post("/", async (req, res) => {
     },
   });
 
-  res.send(getColumns.data);
+  res.send(getRows.data);
 });
 
 const CONNECTION_URL = process.env.MONGO_URI;
